@@ -38,10 +38,10 @@
             </li>
             {% else %}
             <li>
-                <a href="{% url 'account_signup' %}?next=/booking/">Table booking</a>
+                <a href="{% url 'account_signup' %}">Table booking</a>
             </li>
             <li>
-                <a href="#">Log in</a>
+                <a href="{% url 'account_login' %}">Log in</a>
             </li>
             {% endif %}
         </ul>
