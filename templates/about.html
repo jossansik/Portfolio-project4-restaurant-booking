@@ -1,6 +1,14 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 
-<div>
+<div class="mt-5 mb-4 text-center row">
+    <div class="mb-5">
+        <img width="auto" height="auto" class="hero" src="{% static 'images/About_text.webp' %}" alt="Welcome to">
+        <img width="auto" height="auto" class="hero-lefleur" src="{% static 'images/About_lefleur_text.webp' %}" alt="Le Fleur">
+    </div>
+    <div>
+        <img width="auto" height="auto" src="{% static 'images/About_lefleur_logo.webp' %}" alt="Le fleur">
+        <p class="col-lg-5 pt-5 m-auto">Restaurant Le Fleur is a fictional vegan sushi restaurant. This webpage and booking system is made by Josefin Sikström as a full stack portfolio project :)</p>
+    </div>
 </div>
 
 {%endblock%}
