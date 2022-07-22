@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Josefin Sans';
+    color: #383232;
+    background-color: #1B1316;
+}
+
+h1 {
+    color: #fff;
+}
+
+label {
+    color: #fff;
+}
+
+h2 {
+    color: #fff;
+    text-align: center;
+    font-family: 'Josefin Sans';
+    margin-top: 1%;
+}
+
+h3 {
+    color: #fff;
+}
+
+p {
+    color: #fff;
+}
+
+.btn-primary,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #8EC137;
+    border-color: #8EC137;
+}
+
+.btn-primary:hover {
+    background-color: #E8E7E8;
+    border-color: #8EC137;
+    color: #8EC137;
+}
+
+
+/* Hamburger menu: https://alvarotrigo.com/blog/hamburger-menu-css/ */
+
+.nav-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #00BAF0;
+    background-color: #F32E7C;
+    color: #FFF;
+    height: 50px;
+    padding: 1em;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+}
+
+.menu {
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0 1rem;
+    overflow: hidden;
+}
+
+.menu-button-container {
+    display: none;
+    height: 100%;
+    width: 30px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-button,
+.menu-button::before,
+.menu-button::after {
+    display: block;
+    background-color: #fff;
+    position: absolute;
+    height: 4px;
+    width: 30px;
+    transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 2px;
+}
+
+.menu-button::before {
+    content: '';
+    margin-top: -8px;
+}
+
+.menu-button::after {
+    content: '';
+    margin-top: 8px;
+}
+
+#menu-toggle:checked+.menu-button-container .menu-button::before {
+    margin-top: 0px;
+    transform: rotate(405deg);
+}
+
+#menu-toggle:checked+.menu-button-container .menu-button {
+    background: rgba(255, 255, 255, 0);
+}
+
+#menu-toggle:checked+.menu-button-container .menu-button::after {
+    margin-top: 0px;
+    transform: rotate(-405deg);
+}
+
+.hero {
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin: auto;
+    max-width: 400px;
+}
+
+.hero-lefleur {
+    max-width: 300px;
+    margin-top: -0.50rem !important;
+}
+
+.timeslot-select a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.timeslot-select *:hover {
+    text-decoration: none;
+    color: #8EC137;
+}
+
+.modal-content-background {
+    background-color: #281E21;
+}
+
+footer {
+    font-size: 16px;
+    color: white;
+    background-color: #383232;
+    height: 10rem;
+}
+
+@media (max-width: 700px) {
+    .menu-button-container {
+        display: flex;
+    }
+    .menu {
+        position: absolute;
+        top: 0;
+        margin-top: 50px;
+        left: 0;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+    #menu-toggle~.menu li {
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    #menu-toggle:checked~.menu li {
+        border: 1px solid #333;
+        height: 2.5em;
+        padding: 0.5em;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .menu li {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0.5em 0;
+        width: 100%;
+        color: white;
+        background-color: #222;
+    }
+    .menu li:not(:last-child) {
+        border-bottom: 1px solid #444;
+    }
+}
