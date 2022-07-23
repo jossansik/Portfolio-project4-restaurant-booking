@@ -1,6 +1,18 @@
 from django.forms import ValidationError
-from restaurant_app.models import Reservation
+from restaurant_app.models import Reservation, Table
 from datetime import timedelta, datetime
+
+
+class ReservedTable:
+    def __init__(self):
+        self.is_reserved = False,
+        self.id = 0,
+
+
+class ReservedTableTimeSlot:
+    def __init__(self):
+        self.time = 0,
+        self.reservedTable = {},
 
 
 class TimeSlot:
@@ -26,15 +38,36 @@ def make_reservation(user, table, reservation_start_date, num_guests):
 def get_timeslots(num_guests, date):
     start_date = datetime(date.year, date.month, date.day, 0, 0)
     end_date = datetime(date.year, date.month, date.day, 23, 59)
-    existingReservations = Reservation.objects.filter(table__capacity__gte=num_guests,
-                                                      reserved_start_date__gte=start_date, reserved_start_date__lte=end_date)
+    tables = Table.objects.filter(capacity__gte=num_guests)
+    reservedTableTimeslots = []
+    for table in tables:
+        existingReservations = Reservation.objects.filter(table=table,
+                                                          reserved_start_date__gte=start_date, reserved_start_date__lte=end_date)
+
+        for hour in range(11, 22):
+            reservedTableTimeslot = ReservedTableTimeSlot()
+            reservedTableTimeslot.time = hour
+            reservedTableTimeslot.reservedTable = ReservedTable()
+            reservedTableTimeslot.reservedTable.id = table.id
+
+            if any(x.reserved_start_date.hour == hour for x in existingReservations):
+                reservedTableTimeslot.reservedTable.is_reserved = True
+            else:
+                reservedTableTimeslot.reservedTable.is_reserved = False
+
+            reservedTableTimeslots.append(reservedTableTimeslot)
 
     timeslots = []
     for hour in range(11, 22):
         timeslot = TimeSlot()
         timeslot.time = hour
 
-        if any(x.reserved_start_date.hour == hour for x in existingReservations):
+        reservedTableTimeslotsForHour = (
+            x for x in reservedTableTimeslots if x.time == hour)
+        is_reserved = all(v.reservedTable.is_reserved ==
+                          True for v in reservedTableTimeslotsForHour)
+
+        if is_reserved:
             timeslot.is_reserved = True
         else:
             timeslot.is_reserved = False
