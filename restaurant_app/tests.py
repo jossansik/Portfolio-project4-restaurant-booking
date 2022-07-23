@@ -3,7 +3,7 @@ from django.forms import ValidationError
 from django.test import TestCase
 from datetime import datetime
 from restaurant_app.models import Table, Reservation
-from restaurant_app.services import makereservation
+from restaurant_app.services import make_reservation, get_timeslots
 from django.contrib.auth.models import User
 
 
@@ -47,7 +47,7 @@ class ReserveTableTest(TestCase):
             "Sven", 'sven@ripa.com', 'testpassword')
 
         # Act
-        reservation = makereservation(
+        reservation = make_reservation(
             userWithReservation, table, reserved_start_date, number_of_guests)
 
         # Assert
@@ -70,6 +70,28 @@ class ReserveTableTest(TestCase):
 
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
-            makereservation(userWantToReservate, table.id,
-                            reserved_start_date, number_of_guests)
+            make_reservation(userWantToReservate, table.id,
+                             reserved_start_date, number_of_guests)
         self.assertTrue('NOT ALLOWED!' in str(context.exception))
+
+
+class ReservationsTest(TestCase):
+
+    def test_guest_can_list_reservations_with_reserved_timeslot(self):
+        # Arrange
+        date = datetime.now()
+        start_date = datetime(date.year, date.month, date.day, 12)
+        capacity = 4
+        number_of_guests = 3
+        table = Table.objects.create(capacity=capacity)
+        userWithReservation = User.objects.create_user(
+            "Sven", 'sven@ripa.com', 'testpassword')
+        make_reservation(userWithReservation, table,
+                         start_date, number_of_guests)
+
+        # Act
+        timeslots = get_timeslots(num_guests=number_of_guests, date=date)
+
+        # Assert
+        self.assertEqual(timeslots[0].is_reserved, False)
+        self.assertEqual(timeslots[1].is_reserved, True)
