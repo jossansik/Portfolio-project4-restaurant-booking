@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_bootstrap5',
     'coverage',
+    'bootstrap_datepicker_plus',
     'restaurant_app',
 ]
 

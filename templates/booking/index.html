@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% load django_bootstrap5 %} {% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+{{ form.media }}
+
+<div class="col-lg-5 col mt-4 px-4 mb-4">
+    <h3 class="mb-3 text-center">Make your reservation</h3>
+    <h3 class="mb-3 text-center">Step 1 of 3</h3>
+    {% if form is not None %}
+    <form method="post">
+        {% csrf_token %} {% bootstrap_form form %}
+        <p>For reservations with more than 8 guest, please send us an email.</p>
+        <div class="mb-4 text-center">
+            {% bootstrap_button button_type="submit" content="See available times" %}
+        </div>
+    </form>
+    {% else %} {% if timeslots|length > 0 %}
+    <div class="mb-4 mt-4 text-white">
+        <p>Date: {{ timeslots.0.time|date:'Y-m-d' }}</p>
+        <p>Number of guests: {{ timeslots.0.num_guests }}</p>
+        <a href={% url 'booking' %} class="btn btn-primary" role="button">Repick</a>
+    </div>
+    {% endif %} {% endif %} {% for timeslot in timeslots %}
+    <div class="col timeslot-select">
+        <div class="card">
+            <div class="card-body">
+                {% if timeslot.is_reserved %} Fully booked {% else %}
+                <div class="d-flex justify-content-between">
+                    <a class="stretched-link" href="#">{{ timeslot.time|date:'H:i' }} </a>
+                    <div>Available</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{%endblock%}

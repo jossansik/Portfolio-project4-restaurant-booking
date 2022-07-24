@@ -2,7 +2,7 @@ import unittest
 from django.forms import ValidationError
 from django.test import TestCase
 from datetime import datetime
-from restaurant_app.models import Table, Reservation
+from restaurant_app.models import MIN_HOUR, Table, Reservation
 from restaurant_app.services import make_reservation, get_timeslots
 from django.contrib.auth.models import User
 
@@ -48,7 +48,7 @@ class ReserveTableTest(TestCase):
 
         # Act
         reservation = make_reservation(
-            userWithReservation, table, reserved_start_date, number_of_guests)
+            userWithReservation, table.id, reserved_start_date, number_of_guests)
 
         # Assert
         self.assertEqual(reservation.reserved_start_date, reserved_start_date)
@@ -77,39 +77,17 @@ class ReserveTableTest(TestCase):
 
 class ReservationsTest(TestCase):
 
-    def test_guest_can_list_reservations_with_reserved_timeslot(self):
+    def test_guest_can_list_reservations(self):
         # Arrange
         date = datetime.now()
-        start_date = datetime(date.year, date.month, date.day, 12)
+        start_date = datetime(date.year, date.month, date.day, MIN_HOUR)
         capacity = 4
         number_of_guests = 3
-        table = Table.objects.create(name='Table 1', capacity=capacity)
+        table = Table.objects.create(name="Table 1", capacity=capacity)
+        Table.objects.create(name="Table 2", capacity=capacity)
         userWithReservation = User.objects.create_user(
             "Sven", 'sven@ripa.com', 'testpassword')
-        make_reservation(userWithReservation, table,
-                         start_date, number_of_guests)
-
-        # Act
-        timeslots = get_timeslots(num_guests=number_of_guests, date=date)
-
-        # Assert
-        self.assertEqual(timeslots[0].is_reserved, False)
-        self.assertEqual(timeslots[1].is_reserved, True)
-
-    # When there are multiple tables with requested capacities,
-    # Only one table is reserved by a guest,
-    # Guest should be able to reserve available table.
-    def test_guest_can_view_available_table_for_timeslots(self):
-        # Arrange
-        date = datetime.now()
-        start_date = datetime(date.year, date.month, date.day, 12)
-        capacity = 4
-        number_of_guests = 3
-        table = Table.objects.create(name='Table 1', capacity=capacity)
-        Table.objects.create(name='Table 2', capacity=capacity)
-        userWithReservation = User.objects.create_user(
-            "Sven", 'sven@ripa.com', 'testpassword')
-        make_reservation(userWithReservation, table,
+        make_reservation(userWithReservation, table.id,
                          start_date, number_of_guests)
 
         # Act
@@ -118,3 +96,53 @@ class ReservationsTest(TestCase):
         # Assert
         self.assertEqual(timeslots[0].is_reserved, False)
         self.assertEqual(timeslots[1].is_reserved, False)
+
+    # When there are multiple tables with requested capacities,
+    # Only one table is reserved by a guest,
+    # Guest should be able to reserve available table.
+    def test_guest_can_view_available_table_for_timeslots(self):
+        # Arrange
+        date = datetime.now()
+        start_date = datetime(date.year, date.month, date.day, MIN_HOUR)
+        capacity = 4
+        number_of_guests = 3
+        table = Table.objects.create(name="Table 1", capacity=capacity)
+        Table.objects.create(name="Table 2", capacity=capacity)
+        userWithReservation = User.objects.create_user(
+            "Sven", 'sven@ripa.com', 'testpassword')
+        make_reservation(userWithReservation, table.id,
+                         start_date, number_of_guests)
+
+        # Act
+        timeslots = get_timeslots(num_guests=number_of_guests, date=date)
+
+        # Assert
+        self.assertEqual(timeslots[0].is_reserved, False)
+        self.assertEqual(timeslots[1].is_reserved, False)
+
+    def test_guest_can_view_reserved_timeslots(self):
+        # Arrange
+        date = datetime.now()
+        start_date = datetime(date.year, date.month, date.day, MIN_HOUR)
+        capacity = 4
+        number_of_guests = 3
+        table = Table.objects.create(capacity=capacity)
+        userWithReservation = User.objects.create_user(
+            "Sven", 'sven@ripa.com', 'testpassword')
+        make_reservation(userWithReservation, table.id,
+                         start_date, number_of_guests)
+
+        # Act
+        timeslots = get_timeslots(num_guests=number_of_guests, date=date)
+
+        # Assert
+        self.assertEqual(timeslots[0].is_reserved, True)
+        self.assertEqual(timeslots[0].time, datetime(
+            date.year, date.month, date.day, MIN_HOUR))
+
+        availableHour = MIN_HOUR+1
+        self.assertEqual(timeslots[1].is_reserved, False)
+        self.assertEqual(timeslots[1].table_id, table.id)
+        self.assertEqual(timeslots[1].num_guests, number_of_guests)
+        self.assertEqual(timeslots[1].time, datetime(
+            date.year, date.month, date.day, availableHour))

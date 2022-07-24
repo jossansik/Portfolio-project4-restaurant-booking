@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 STATUS = ((0, "Booked"), (1, "Confirmed"))
+MAX_TABLE_CAPACITY = 8
+MIN_TABLE_CAPACITY = 2
+MIN_HOUR = 11
+MAX_HOUR = 22
 
 
 class Table(models.Model):
