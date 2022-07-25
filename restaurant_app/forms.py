@@ -14,3 +14,10 @@ class BookingForm(forms.Form):
     }))
     num_guests = forms.CharField(
         label='Choose number of guests', widget=forms.Select(choices=INTEGER_CHOICES))
+
+
+class ReservationForm(forms.Form):
+    num_guests = forms.CharField(widget=forms.HiddenInput(), required=True)
+    reserved_start_date = forms.CharField(
+        widget=forms.HiddenInput(), required=True)
+    table_id = forms.CharField(widget=forms.HiddenInput(), required=True)

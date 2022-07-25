@@ -10,4 +10,6 @@ urlpatterns = [
     path('booking/', login_required(views.BookingView.as_view()), name='booking'),
     path('booking/details/', login_required(views.BookingDetailsView.as_view()),
          name='booking_details'),
+    path('booking/complete/', login_required(views.BookingCompleteView.as_view()),
+         name='booking_complete'),
 ]
