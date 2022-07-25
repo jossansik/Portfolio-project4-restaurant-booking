@@ -1,13 +1,17 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
 <div class="mt-5 mb-4 text-center row">
     <div class="col-lg m-auto">
         <img width="auto" height="auto" class="hero" src="{% static 'images/Welcome_text.webp' %}" alt="Welcome to">
-        <img width="auto" height="auto" class="hero hero-lefleur" src="{% static 'images/Welcome_lefleur_text.webp' %}" alt="Le Fleur">
+        <img width="auto" height="auto" class="hero hero-lefleur" src="{% static 'images/Welcome_lefleur_text.webp' %}"
+            alt="Le Fleur">
         <p class="pt-5 text-center">Vegan sushi restaurant in Stockholm</p>
     </div>
     <div class="col-lg m-auto">
-        <img width="auto" height="auto" class="hero" src="{% static 'images/Welcome_logo.webp' %}" alt="Logo with illustrated flower.">
+        <img width="auto" height="auto" class="hero" src="{% static 'images/Welcome_logo.webp' %}"
+            alt="Logo with illustrated flower.">
     </div>
     <div class="col-lg m-auto">
         <a href={% url 'booking' %} class="btn btn-primary btn-lg" role="button">Book a table</a>

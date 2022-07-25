@@ -6,7 +6,10 @@
 <head>
     <title>Restaurant Le Fleur</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> {% load django_bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+    <link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
@@ -49,7 +52,8 @@
     <main>
         <section class="container">
             <div class="row justify-content-center">
-                {% block content %} {% endblock content %}
+                {% block content %}
+                {% endblock content %}
             </div>
         </section>
     </main>
