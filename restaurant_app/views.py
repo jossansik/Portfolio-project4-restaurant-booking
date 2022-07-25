@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
 from restaurant_app.forms import BookingForm
-from restaurant_app.services import get_timeslots
+from restaurant_app.services import TimeSlot, get_timeslots
 
 
 class HomeView(TemplateView):
@@ -47,5 +47,26 @@ class BookingView(View):
             "booking/index.html",
             {
                 "timeslots": timeslots,
+            },
+        )
+
+
+class BookingDetailsView(View):
+    def get(self, request, *args, **kwargs):
+        datestr = request.GET.get('time')
+        date = datetime.strptime(datestr, "%Y-%m-%d %H:%M:%S")
+        num_guests = request.GET.get('num_guests')
+        table_id = request.GET.get('table_id')
+
+        timeslot = TimeSlot()
+        timeslot.reserved_start_date = date
+        timeslot.num_guests = num_guests
+        timeslot.table_id = table_id
+
+        return render(
+            request,
+            "booking/details.html",
+            {
+                "timeslot": timeslot
             },
         )

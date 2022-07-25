@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
+
+{{ form.media }}
+
+<div class="col-lg-5 col mt-4 px-4 mb-4">
+    <h3 class="mb-3 text-center">Reservation details</h3>
+    <h3 class="mb-3 text-center">Step 2 of 3</h3>
+    <div class="col">
+        <div class="card">
+            <div class="card-body m-auto text-left">
+                <div>
+                    Date: {{ timeslot.reserved_start_date|date:'l j b' }}
+                </div>
+                <div>
+                    Time: {{ timeslot.reserved_start_date|date:'H:i' }}
+                </div>
+                <div>
+                    Number of guests: {{timeslot.num_guests}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

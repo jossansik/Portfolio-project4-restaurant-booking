@@ -1,6 +1,9 @@
-{% extends "base.html" %} {% load django_bootstrap5 %} {% block content %}
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% block content %}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 {{ form.media }}
 
@@ -15,19 +18,25 @@
             {% bootstrap_button button_type="submit" content="See available times" %}
         </div>
     </form>
-    {% else %} {% if timeslots|length > 0 %}
+    {% else %}
+    {% if timeslots|length > 0 %}
     <div class="mb-4 mt-4 text-white">
         <p>Date: {{ timeslots.0.time|date:'Y-m-d' }}</p>
         <p>Number of guests: {{ timeslots.0.num_guests }}</p>
         <a href={% url 'booking' %} class="btn btn-primary" role="button">Repick</a>
     </div>
-    {% endif %} {% endif %} {% for timeslot in timeslots %}
+    {% endif %}
+    {% endif %}
+    {% for timeslot in timeslots %}
     <div class="col timeslot-select">
         <div class="card">
             <div class="card-body">
                 {% if timeslot.is_reserved %} Fully booked {% else %}
                 <div class="d-flex justify-content-between">
-                    <a class="stretched-link" href="#">{{ timeslot.time|date:'H:i' }} </a>
+                    <a class="stretched-link"
+                        href="{% url 'booking_details' %}?time={{ timeslot.time|date:'Y-m-d H:i:s' }}&table_id={{timeslot.table_id}}&num_guests={{timeslot.num_guests}}">
+                        {{ timeslot.time|date:'H:i' }}
+                    </a>
                     <div>Available</div>
                 </div>
                 {% endif %}
