@@ -1,3 +1,4 @@
+import pytz
 from django.forms import ValidationError
 from restaurant_app.models import MAX_HOUR, MIN_HOUR, Reservation, Table
 from datetime import timedelta, datetime
@@ -38,8 +39,9 @@ def make_reservation(user, table_id, reservation_start_date, num_guests):
 
 
 def get_timeslots(num_guests, date):
-    start_date = datetime(date.year, date.month, date.day, 0)
-    end_date = datetime(date.year, date.month, date.day, 23, 59)
+    start_date = datetime(date.year, date.month, date.day, 0, tzinfo=pytz.UTC)
+    end_date = datetime(date.year, date.month, date.day,
+                        23, 59, tzinfo=pytz.UTC)
     tables = Table.objects.filter(capacity__gte=num_guests)
     reservedTableTimeslots = []
     for table in tables:
@@ -62,7 +64,8 @@ def get_timeslots(num_guests, date):
     timeslots = []
     for hour in range(MIN_HOUR, MAX_HOUR):
         timeslot = TimeSlot()
-        timeslot.time = datetime(date.year, date.month, date.day, hour)
+        timeslot.time = datetime(
+            date.year, date.month, date.day, hour, tzinfo=pytz.UTC)
         timeslot.num_guests = num_guests
 
         reservedTableTimeslotsForHour = (

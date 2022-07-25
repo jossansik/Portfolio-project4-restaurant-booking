@@ -1,4 +1,4 @@
-import unittest
+import pytz
 from django.forms import ValidationError
 from django.test import TestCase
 from datetime import datetime
@@ -20,7 +20,7 @@ class TableTest(TestCase):
 
 class ReservationTest(TestCase):
 
-    def create_reservation(self, tableCapacity=3, username="Kons", num_guests=3, reserved_start_date=datetime.now()):
+    def create_reservation(self, tableCapacity=3, username="Kons", num_guests=3, reserved_start_date=datetime.now(tz=pytz.UTC)):
         table = Table.objects.create(capacity=tableCapacity)
         user = User.objects.create_user(
             username, 'blah@blah.com', 'testpassword')
@@ -39,7 +39,7 @@ class ReserveTableTest(TestCase):
 
     def test_guest_can_reserve_available_table(self):
         # Arrange
-        reserved_start_date = datetime.now()
+        reserved_start_date = datetime.now(tz=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
@@ -57,7 +57,7 @@ class ReserveTableTest(TestCase):
 
     def test_guest_cannot_reserve_booked_table_at_fully_booked_time(self):
         # Arrange
-        reserved_start_date = datetime.now()
+        reserved_start_date = datetime.now(tz=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
@@ -79,8 +79,9 @@ class ReservationsTest(TestCase):
 
     def test_guest_can_list_reservations(self):
         # Arrange
-        date = datetime.now()
-        start_date = datetime(date.year, date.month, date.day, MIN_HOUR)
+        date = datetime.now(tz=pytz.UTC)
+        start_date = datetime(date.year, date.month,
+                              date.day, MIN_HOUR, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(name="Table 1", capacity=capacity)
@@ -102,8 +103,9 @@ class ReservationsTest(TestCase):
     # Guest should be able to reserve available table.
     def test_guest_can_view_available_table_for_timeslots(self):
         # Arrange
-        date = datetime.now()
-        start_date = datetime(date.year, date.month, date.day, MIN_HOUR)
+        date = datetime.now(tz=pytz.UTC)
+        start_date = datetime(date.year, date.month,
+                              date.day, MIN_HOUR, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(name="Table 1", capacity=capacity)
@@ -122,8 +124,9 @@ class ReservationsTest(TestCase):
 
     def test_guest_can_view_reserved_timeslots(self):
         # Arrange
-        date = datetime.now()
-        start_date = datetime(date.year, date.month, date.day, MIN_HOUR)
+        date = datetime.now(tz=pytz.UTC)
+        start_date = datetime(date.year, date.month,
+                              date.day, MIN_HOUR, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
@@ -138,11 +141,11 @@ class ReservationsTest(TestCase):
         # Assert
         self.assertEqual(timeslots[0].is_reserved, True)
         self.assertEqual(timeslots[0].time, datetime(
-            date.year, date.month, date.day, MIN_HOUR))
+            date.year, date.month, date.day, MIN_HOUR, tzinfo=pytz.UTC))
 
         availableHour = MIN_HOUR+1
         self.assertEqual(timeslots[1].is_reserved, False)
         self.assertEqual(timeslots[1].table_id, table.id)
         self.assertEqual(timeslots[1].num_guests, number_of_guests)
         self.assertEqual(timeslots[1].time, datetime(
-            date.year, date.month, date.day, availableHour))
+            date.year, date.month, date.day, availableHour, tzinfo=pytz.UTC))
