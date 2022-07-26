@@ -25,6 +25,7 @@ class TimeSlot:
 
 def make_reservation(user, table_id, reservation_start_date, num_guests):
     table = Table.objects.get(pk=table_id)
+    reservation_start_date = reservation_start_date.replace(tzinfo=pytz.UTC)
     end_date = reservation_start_date + timedelta(minutes=30)
     existingReservation = Reservation.objects.filter(
         table=table, reserved_start_date__gte=reservation_start_date, reserved_start_date__lt=end_date)

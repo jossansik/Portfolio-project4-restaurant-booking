@@ -1,10 +1,12 @@
+import pytz
 from datetime import datetime
 from django.forms import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
-from restaurant_app.forms import BookingForm, ReservationForm
+from restaurant_app.forms import BookingForm, MyReservationForm, ReservationForm
+from restaurant_app.models import Reservation
 from restaurant_app.services import TimeSlot, get_timeslots, make_reservation
 
 
@@ -127,3 +129,35 @@ class BookingCompleteView(View):
                 "date": date
             },
         )
+
+
+class MyReservationView(View):
+    def get(self, request, *args, **kwargs):
+        form = MyReservationForm()
+        reservation = {}
+        reservation_date = {}
+        message = request.GET.get('message')
+
+        if any(Reservation.objects.filter(guest=request.user, reserved_start_date__gte=datetime.now(tz=pytz.UTC))):
+            reservation = Reservation.objects.get(
+                guest=request.user, reserved_start_date__gte=datetime.now(tz=pytz.UTC))
+            form['reservation_id'].initial = reservation.id
+            reservation_date = reservation.reserved_start_date
+
+        return render(
+            request,
+            "my/reservation/index.html",
+            {
+                "form": form,
+                "reservation": reservation,
+                "date": reservation_date,
+                "message": message,
+            },
+        )
+
+    def post(self, request, *args, **kwargs):
+        reservation_id = request.POST.get("reservation_id")
+        reservation = Reservation.objects.get(pk=reservation_id)
+        reservation.delete()
+
+        return redirect(reverse('my_reservation') + '?message=success')

@@ -18,6 +18,10 @@ class BookingForm(forms.Form):
 
 class ReservationForm(forms.Form):
     num_guests = forms.CharField(widget=forms.HiddenInput(), required=True)
-    reserved_start_date = forms.CharField(
+    reserved_start_date = forms.DateField(
         widget=forms.HiddenInput(), required=True)
     table_id = forms.CharField(widget=forms.HiddenInput(), required=True)
+
+
+class MyReservationForm(forms.Form):
+    reservation_id = forms.CharField(widget=forms.HiddenInput(), required=True)

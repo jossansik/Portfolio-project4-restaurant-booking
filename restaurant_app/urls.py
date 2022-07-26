@@ -12,4 +12,6 @@ urlpatterns = [
          name='booking_details'),
     path('booking/complete/', login_required(views.BookingCompleteView.as_view()),
          name='booking_complete'),
+    path('my/reservation/', login_required(views.MyReservationView.as_view()),
+         name='my_reservation'),
 ]
