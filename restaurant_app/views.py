@@ -89,10 +89,12 @@ class BookingDetailsView(View):
         date = datetime.strptime(datestr, "%Y-%m-%d %H:%M:%S")
         num_guests = request.POST.get('num_guests')
         table_id = request.POST.get('table_id')
+        guest_fullname = request.POST.get('guest_fullname')
 
         form['reserved_start_date'].initial = date
         form['num_guests'].initial = num_guests
         form['table_id'].initial = table_id
+        form['guest_fullname'].initial = guest_fullname
 
         timeslot = TimeSlot()
         timeslot.reserved_start_date = date
@@ -100,7 +102,8 @@ class BookingDetailsView(View):
         timeslot.table_id = table_id
 
         try:
-            make_reservation(request.user, timeslot.table_id, date, num_guests)
+            make_reservation(request.user, timeslot.table_id,
+                             date, num_guests, guest_fullname)
         except ValidationError as ex:
             return render(
                 request,
@@ -112,22 +115,14 @@ class BookingDetailsView(View):
                 },
             )
 
-        return redirect(reverse('booking_complete') + '?num_guests=' + num_guests + '&date=' + datestr)
+        return redirect(reverse('booking_complete'))
 
 
 class BookingCompleteView(View):
     def get(self, request, *args, **kwargs):
-        datestr = request.GET.get('date')
-        date = datetime.strptime(datestr, "%Y-%m-%d %H:%M:%S")
-        num_guests = request.GET.get('num_guests')
-
         return render(
             request,
-            "booking/complete.html",
-            {
-                "num_guests": num_guests,
-                "date": date
-            },
+            "booking/complete.html", {},
         )
 
 

@@ -23,7 +23,7 @@ class TimeSlot:
         self.table_id = 0,
 
 
-def make_reservation(user, table_id, reservation_start_date, num_guests):
+def make_reservation(user, table_id, reservation_start_date, num_guests, guest_fullname):
     table = Table.objects.get(pk=table_id)
     reservation_start_date = reservation_start_date.replace(tzinfo=pytz.UTC)
     end_date = reservation_start_date + timedelta(minutes=30)
@@ -34,7 +34,7 @@ def make_reservation(user, table_id, reservation_start_date, num_guests):
         raise ValidationError("NOT ALLOWED!")
 
     reservation = Reservation.objects.create(
-        guest=user, table=table, num_guests=num_guests, reserved_start_date=reservation_start_date)
+        guest=user, table=table, num_guests=num_guests, reserved_start_date=reservation_start_date, guest_fullname=guest_fullname)
 
     return reservation
 

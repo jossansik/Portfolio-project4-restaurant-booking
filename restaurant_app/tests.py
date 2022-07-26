@@ -43,12 +43,13 @@ class ReserveTableTest(TestCase):
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
-        userWithReservation = User.objects.create_user(
+        user_with_reservation = User.objects.create_user(
             "Sven", 'sven@ripa.com', 'testpassword')
+        guest_fullname = 'Jan Svensson'
 
         # Act
         reservation = make_reservation(
-            userWithReservation, table.id, reserved_start_date, number_of_guests)
+            user_with_reservation, table.id, reserved_start_date, number_of_guests, guest_fullname)
 
         # Assert
         self.assertEqual(reservation.reserved_start_date, reserved_start_date)
@@ -61,17 +62,19 @@ class ReserveTableTest(TestCase):
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
-        userWithReservation = User.objects.create_user(
+        user_with_reservation = User.objects.create_user(
             "Sven", 'sven@ripa.com', 'testpassword')
-        Reservation.objects.create(guest=userWithReservation, table=table,
-                                   num_guests=number_of_guests, reserved_start_date=reserved_start_date)
-        userWantToReservate = User.objects.create_user(
+        guest_fullname = 'Karl Swedensson'
+        Reservation.objects.create(guest=user_with_reservation, table=table,
+                                   num_guests=number_of_guests, reserved_start_date=reserved_start_date, guest_fullname=guest_fullname)
+        user_want_to_reservate = User.objects.create_user(
             "Janne", 'janne@svensson.com', 'testpassword')
+        user_want_to_reservate_guest_fullname = 'Super Duper'
 
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
-            make_reservation(userWantToReservate, table.id,
-                             reserved_start_date, number_of_guests)
+            make_reservation(user_want_to_reservate, table.id,
+                             reserved_start_date, number_of_guests, user_want_to_reservate_guest_fullname)
         self.assertTrue('NOT ALLOWED!' in str(context.exception))
 
 
@@ -84,12 +87,13 @@ class ReservationsTest(TestCase):
                               date.day, MIN_HOUR, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
+        guest_fullname = 'Karl Swedensson'
         table = Table.objects.create(name="Table 1", capacity=capacity)
         Table.objects.create(name="Table 2", capacity=capacity)
-        userWithReservation = User.objects.create_user(
+        user_with_reservation = User.objects.create_user(
             "Sven", 'sven@ripa.com', 'testpassword')
-        make_reservation(userWithReservation, table.id,
-                         start_date, number_of_guests)
+        make_reservation(user_with_reservation, table.id,
+                         start_date, number_of_guests, guest_fullname)
 
         # Act
         timeslots = get_timeslots(num_guests=number_of_guests, date=date)
@@ -108,12 +112,13 @@ class ReservationsTest(TestCase):
                               date.day, MIN_HOUR, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
+        guest_fullname = 'Karl Swedensson'
         table = Table.objects.create(name="Table 1", capacity=capacity)
         Table.objects.create(name="Table 2", capacity=capacity)
-        userWithReservation = User.objects.create_user(
+        user_with_reservation = User.objects.create_user(
             "Sven", 'sven@ripa.com', 'testpassword')
-        make_reservation(userWithReservation, table.id,
-                         start_date, number_of_guests)
+        make_reservation(user_with_reservation, table.id,
+                         start_date, number_of_guests, guest_fullname)
 
         # Act
         timeslots = get_timeslots(num_guests=number_of_guests, date=date)
@@ -129,11 +134,12 @@ class ReservationsTest(TestCase):
                               date.day, MIN_HOUR, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
+        guest_fullname = 'Karl Swedensson'
         table = Table.objects.create(capacity=capacity)
         userWithReservation = User.objects.create_user(
             "Sven", 'sven@ripa.com', 'testpassword')
         make_reservation(userWithReservation, table.id,
-                         start_date, number_of_guests)
+                         start_date, number_of_guests, guest_fullname)
 
         # Act
         timeslots = get_timeslots(num_guests=number_of_guests, date=date)

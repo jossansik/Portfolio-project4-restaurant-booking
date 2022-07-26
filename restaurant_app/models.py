@@ -28,3 +28,4 @@ class Reservation(models.Model):
         User, on_delete=models.CASCADE, related_name='guest_reservations')
     table = models.ForeignKey(
         Table, on_delete=models.CASCADE, related_name='table_reservations')
+    guest_fullname = models.CharField(max_length=150)

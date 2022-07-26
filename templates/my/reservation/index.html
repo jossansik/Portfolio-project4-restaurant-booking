@@ -15,13 +15,16 @@
         <div class="card">
             <div class="card-body m-auto text-left">
                 <div>
+                    Name: {{ reservation.guest_fullname }}
+                </div>
+                <div>
                     Date: {{ date|date:'l j b' }}
                 </div>
                 <div>
                     Time: {{ date|date:'H:i' }}
                 </div>
                 <div>
-                    Number of guests: {{reservation.num_guests}}
+                    Number of guests: {{ reservation.num_guests }}
                 </div>
             </div>
         </div>

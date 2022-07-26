@@ -17,6 +17,8 @@ class BookingForm(forms.Form):
 
 
 class ReservationForm(forms.Form):
+    guest_fullname = forms.CharField(
+        label='Please enter your full name', required=True, max_length=150, widget=forms.TextInput(attrs={'placeholder': ''}))
     num_guests = forms.CharField(widget=forms.HiddenInput(), required=True)
     reserved_start_date = forms.DateField(
         widget=forms.HiddenInput(), required=True)
