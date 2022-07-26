@@ -110,12 +110,20 @@ class BookingDetailsView(View):
                 },
             )
 
-        return redirect(reverse('booking_complete'))
+        return redirect(reverse('booking_complete') + '?num_guests=' + num_guests + '&date=' + datestr)
 
 
 class BookingCompleteView(View):
     def get(self, request, *args, **kwargs):
+        datestr = request.GET.get('date')
+        date = datetime.strptime(datestr, "%Y-%m-%d %H:%M:%S")
+        num_guests = request.GET.get('num_guests')
+
         return render(
             request,
-            "booking/complete.html", {},
+            "booking/complete.html",
+            {
+                "num_guests": num_guests,
+                "date": date
+            },
         )
