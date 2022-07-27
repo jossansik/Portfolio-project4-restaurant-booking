@@ -1,7 +1,7 @@
 import pytz
 from django.forms import ValidationError
 from django.test import TestCase
-from datetime import datetime
+from datetime import datetime, timedelta
 from restaurant_app.models import MIN_HOUR, Table, Reservation
 from restaurant_app.services import make_reservation, get_timeslots
 from django.contrib.auth.models import User
@@ -75,10 +75,69 @@ class ReserveTableTest(TestCase):
         with self.assertRaises(ValidationError) as context:
             make_reservation(user_want_to_reservate, table.id,
                              reserved_start_date, number_of_guests, user_want_to_reservate_guest_fullname)
-        self.assertTrue('NOT ALLOWED!' in str(context.exception))
+        self.assertTrue('Table is already reserved' in str(context.exception))
+
+    def test_guest_cannot_reserve_table_without_capacity(self):
+        # Arrange
+        reserved_start_date = datetime.now(tz=pytz.UTC)
+        capacity = 4
+        number_of_guests = 5
+        table = Table.objects.create(name="Table 1", capacity=capacity)
+        user = User.objects.create_user(
+            "Sven", 'sven@ripa.com', 'testpassword')
+        guest_fullname = 'Jonas Petersson'
+
+        # Act & Assert
+        with self.assertRaises(ValidationError) as context:
+            make_reservation(user, table.id, reserved_start_date,
+                             number_of_guests, guest_fullname)
+        self.assertTrue(
+            'Table does not support the requested guest count' in str(context.exception))
+
+    def test_guest_cannot_have_multiple_active_reservations(self):
+        # Arrange
+        reserved_start_date = datetime.now(tz=pytz.UTC) + timedelta(hours=1)
+        prev_booking_date = reserved_start_date
+        capacity = 4
+        number_of_guests = 2
+        table = Table.objects.create(name="Table 1", capacity=capacity)
+        user = User.objects.create_user(
+            "Sven", 'sven@ripa.com', 'testpassword')
+        guest_fullname = 'Jonas Petersson'
+        make_reservation(user, table.id, prev_booking_date,
+                         number_of_guests, guest_fullname)
+
+        # Act & Assert
+        with self.assertRaises(ValidationError) as context:
+            make_reservation(
+                user, table.id, reserved_start_date, number_of_guests, guest_fullname)
+        self.assertTrue('You already have a reservation. Go to My reservation to view it.' in str(
+            context.exception))
+
+    def test_guest_can_have_a_previous_reservation_and_make_a_new(self):
+        # Arrange
+        reserved_start_date = datetime.now(tz=pytz.UTC)
+        prev_booking_date = reserved_start_date - timedelta(days=1)
+        capacity = 4
+        number_of_guests = 2
+        table = Table.objects.create(name="Table 1", capacity=capacity)
+        user = User.objects.create_user(
+            "Sven", 'sven@ripa.com', 'testpassword')
+        guest_fullname = 'Jonas Petersson'
+        make_reservation(user, table.id, prev_booking_date,
+                         number_of_guests, guest_fullname)
+
+        # Act
+        reservation = make_reservation(
+            user, table.id, reserved_start_date, number_of_guests, guest_fullname)
+
+        # Assert
+        self.assertEqual(reservation.reserved_start_date, reserved_start_date)
+        self.assertEqual(reservation.num_guests, number_of_guests)
+        self.assertEqual(reservation.table.capacity, capacity)
 
 
-class ReservationsTest(TestCase):
+class ReservationTimesTest(TestCase):
 
     def test_guest_can_list_reservations(self):
         # Arrange

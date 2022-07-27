@@ -25,13 +25,21 @@ class TimeSlot:
 
 def make_reservation(user, table_id, reservation_start_date, num_guests, guest_fullname):
     table = Table.objects.get(pk=table_id)
-    reservation_start_date = reservation_start_date.replace(tzinfo=pytz.UTC)
+
+    if any(Reservation.objects.filter(guest=user, reserved_start_date__gte=datetime.now(tz=pytz.UTC))):
+        raise ValidationError(
+            "You already have a reservation. Go to My reservation to view it.")
+
+    if int(num_guests) > int(table.capacity):
+        raise ValidationError(
+            "Table does not support the requested guest count")
+
     end_date = reservation_start_date + timedelta(minutes=30)
     existingReservation = Reservation.objects.filter(
         table=table, reserved_start_date__gte=reservation_start_date, reserved_start_date__lt=end_date)
 
     if (existingReservation.exists()):
-        raise ValidationError("NOT ALLOWED!")
+        raise ValidationError("Table is already reserved")
 
     reservation = Reservation.objects.create(
         guest=user, table=table, num_guests=num_guests, reserved_start_date=reservation_start_date, guest_fullname=guest_fullname)

@@ -1,6 +1,8 @@
 from . import views
 from django.urls import path
 from django.contrib.auth.decorators import login_required
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
@@ -14,4 +16,6 @@ urlpatterns = [
          name='booking_complete'),
     path('my/reservation/', login_required(views.MyReservationView.as_view()),
          name='my_reservation'),
+    path('favicon.ico', RedirectView.as_view(
+        url=staticfiles_storage.url('images/favicon.ico')))
 ]

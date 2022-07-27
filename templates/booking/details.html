@@ -24,13 +24,13 @@
                 </div>
             </div>
         </div>
+        {% if error %}
+        <div class="alert alert-danger mt-3" role="alert">{{error}}</div>
+        {% endif %}
         <div class="mt-4 text-center">
             {% bootstrap_button button_type="submit" content="Place reservation" %}
         </div>
     </form>
-    {% if error %}
-    <div class="alert alert-danger mt-4" role="alert">{{error}}</div>
-    {% endif %}
 </div>
 
 {%endblock%}
