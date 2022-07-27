@@ -1,0 +1,23 @@
+{
+  "name": "portfolio-project4-restaurant-booking",
+  "version": "1.0.0",
+  "description": "Restaurant website with booking system",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jossansik/Portfolio-project4-restaurant-booking.git"
+  },
+  "author": "Josefin Sikström",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jossansik/Portfolio-project4-restaurant-booking/issues"
+  },
+  "homepage": "https://github.com/jossansik/Portfolio-project4-restaurant-booking#readme",
+  "devDependencies": {
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3"
+  }
+}

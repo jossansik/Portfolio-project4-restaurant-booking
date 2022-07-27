@@ -5,12 +5,13 @@
 
 {% block content %}
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
 <div class="col-lg-5 col mt-4 px-4 mb-4">
-    {% if reservation %}
     <h3 class="mb-3 text-center">Reservation details</h3>
-    {% if user.is_authenticated %}
     <p class="mt-4 text-center">Welcome, {{ user.email }}. Thank you for visiting.</p>
-    {% endif %}
+    {% if reservation %}
     <div class="col">
         <div class="card">
             <div class="card-body m-auto text-left">
@@ -29,11 +30,13 @@
             </div>
         </div>
     </div>
-    <form method="post">
+    <form method="post" id="deleteReservationForm">
         {% csrf_token %}
         {% bootstrap_form form %}
         <div class="mt-4 text-center">
-            <button class="btn btn-primary" rel="tooltip" title="Remove">
+            <button id="delete_reservation_button"
+                onclick="openDeleteConfirmationDialog($, event, '#cancelReservationDialog')"
+                class="btn btn-primary confirm-delete" rel="tooltip" title="Remove">
                 Cancel reservation
             </button>
         </div>
@@ -41,15 +44,61 @@
     {% else %}
     <div class="text-center">
         {% if message and message == 'success' %}
-        <h3 class="mb-3">Your reservation has been cancelled!</h3>
-        <p>We hope to see you soon. If you wish to make a new reservation click on the button below.</p>
+        <div class="col mb-4">
+            <div class="card">
+                <div class="card-body m-auto text-left">
+                    <div class="text-danger mb-2">
+                        Your reservation has been cancelled!
+                    </div>
+                    <div>
+                        We hope to see you soon. If you wish to make a new reservation click on the button below.
+                    </div>
+                </div>
+            </div>
+        </div>
         {% else %}
-        <h3 class="mb-3">You don't have a reservation!</h3>
-        <p>To book a table click on the button below.</p>
+        <div class="col mb-4">
+            <div class="card">
+                <div class="card-body m-auto text-left">
+                    <div class="mb-2">
+                        You currently don't have a reservation!
+                    </div>
+                    <div>
+                        To book a table please click on the button below.
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endif %}
         <a href={% url 'booking' %} class="btn btn-primary" role="button">Book a table</a>
     </div>
     {% endif %}
 </div>
+
+<div id="cancelReservationDialog" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="cancelReservationDialogLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal-content-background">
+            <div class="modal-header">
+                <h3 id="myModalLabel">Are you sure?</h3>
+                <button type="button" class="btn-close bg-white"
+                    onclick="cancelReservationDeletion($, '#cancelReservationDialog')" data-dismiss="modal"
+                    aria-hidden="true"></button>
+            </div>
+            <div class="modal-body">
+                <p>You are about to cancel reservation. Do you want to proceed?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnDelete"
+                    onclick="deleteReservation($, '#cancelReservationDialog', '#deleteReservationForm')"
+                    class="btn btn-danger">Yes</button>
+                <button id="btnClose" onclick="cancelReservationDeletion($, '#cancelReservationDialog')"
+                    data-dismiss="modal" aria-hidden="true" class="btn btn-secondary">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'scripts/myreservation.js' %}"></script>
 
 {%endblock%}
