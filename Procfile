@@ -1,1 +1,1 @@
-web: coverage run manage.py test website -v 2 && gunicorn restaurant_project.wsgi
+web: coverage run manage.py test restaurant_app -v 2 && gunicorn restaurant_project.wsgi
