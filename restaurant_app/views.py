@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from restaurant_app.forms import BookingForm, MyReservationForm, ReservationForm
 from restaurant_app.models import Reservation
-from restaurant_app.services import TimeSlot, get_timeslots, make_reservation
+from restaurant_app.services import TimeSlot, get_menus, get_timeslots, make_reservation
 
 
 class HomeView(TemplateView):
@@ -18,12 +18,30 @@ class AboutView(TemplateView):
     template_name = "about.html"
 
 
-class FoodMenuView(TemplateView):
-    template_name = "menu/food_menu.html"
+class FoodMenuView(View):
+    def get(self, request, *args, **kwargs):
+        menus = get_menus(0) # 0 stands for Menu.TYPE = Dishes
+
+        return render(
+            request,
+            "menu/food_menu.html",
+            {
+                "menus": menus,
+            },
+        )
 
 
-class DrinksMenuView(TemplateView):
-    template_name = "menu/drinks_menu.html"
+class DrinksMenuView(View):
+    def get(self, request, *args, **kwargs):
+        menus = get_menus(1)  # 1 stands for Menu.TYPE = Drinks
+
+        return render(
+            request,
+            "menu/drinks_menu.html",
+            {
+                "menus": menus,
+            },
+        )
 
 
 class BookingView(View):

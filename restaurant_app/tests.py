@@ -2,8 +2,8 @@ import pytz
 from django.forms import ValidationError
 from django.test import TestCase
 from datetime import datetime, timedelta
-from restaurant_app.models import MIN_HOUR, Table, Reservation
-from restaurant_app.services import make_reservation, get_timeslots
+from restaurant_app.models import MIN_HOUR, Menu, MenuItem, Table, Reservation
+from restaurant_app.services import get_menus, make_reservation, get_timeslots
 from django.contrib.auth.models import User
 
 
@@ -214,3 +214,28 @@ class ReservationTimesTest(TestCase):
         self.assertEqual(timeslots[1].num_guests, number_of_guests)
         self.assertEqual(timeslots[1].time, datetime(
             date.year, date.month, date.day, availableHour, tzinfo=pytz.UTC))
+
+
+class MenusTests(TestCase):
+
+    def test_get_menu_with_items_in_position(self):
+        # Arrange
+        menu2 = Menu.objects.create(type=0, name="SIDE DISHES", position=2)
+        MenuItem.objects.create(
+            name="Tempura", price=100, description="Crispy fried vegetable shrimp (6 pcs) served with a dashi, soy sauce & mirin dip.", position=1, menu=menu2)
+
+        menu1 = Menu.objects.create(
+            type=0, name="SUSHI", description="Served with vegan Miso soup & pickled ginger, topped with roasted sesame seeds.", position=1)
+        MenuItem.objects.create(
+            name="12 pcs", price=130, description="4 rolls, 3 vegan sashimi, 2 avocado, 1 tofu, 1 seagrass, 1 sweet red pepper", position=2, menu=menu1)
+        MenuItem.objects.create(
+            name="9 pcs", price=100, description="3 rolls, 2 vegan sashimi, 1 avocado, 1 tofu, 1 seagrass, 1 sweet red pepper", position=1, menu=menu1)
+
+        # Act
+        menus = get_menus(0)
+
+        # Assert
+        self.assertEqual(menus[0].name, 'SUSHI')
+        self.assertEqual(menus[0].items[0].name, '9 pcs')
+        self.assertEqual(menus[1].name, 'SIDE DISHES')
+        self.assertEqual(menus[1].items[0].name, 'Tempura')

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Reservation, Table
+from .models import Menu, MenuItem, Reservation, Table
 
 
 @admin.register(Table)
@@ -13,3 +13,13 @@ class ReservationAdmin(admin.ModelAdmin):
     list_display = ('guest', 'table', 'reserved_start_date',
                     'num_guests', 'status')
     list_filter = ('status', 'created_on')
+
+
+@admin.register(Menu)
+class MenuAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(MenuItem)
+class MenuItemAdmin(admin.ModelAdmin):
+    list_display = ('name',)

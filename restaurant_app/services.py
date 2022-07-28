@@ -1,6 +1,6 @@
 import pytz
 from django.forms import ValidationError
-from restaurant_app.models import MAX_HOUR, MIN_HOUR, Reservation, Table
+from restaurant_app.models import MAX_HOUR, MIN_HOUR, Menu, MenuItem, Reservation, Table
 from datetime import timedelta, datetime
 
 
@@ -21,6 +21,21 @@ class TimeSlot:
         self.time = {},
         self.is_reserved = False,
         self.table_id = 0,
+
+
+class MenuViewModel:
+    def __init__(self):
+        self.name = '',
+        self.description = '',
+        self.image = '',
+        self.items = []
+
+
+class MenuViewModelItem:
+    def __init__(self):
+        self.name = '',
+        self.description = '',
+        self.price = 0,
 
 
 def make_reservation(user, table_id, reservation_start_date, num_guests, guest_fullname):
@@ -94,3 +109,29 @@ def get_timeslots(num_guests, date):
         timeslots.append(timeslot)
 
     return timeslots
+
+
+def get_menus(type):
+    menus = []
+
+    model_menus = Menu.objects.filter(type=type).order_by('position')
+
+    for model_menu in model_menus:
+        menu = MenuViewModel()
+        menu.name = model_menu.name
+        menu.description = model_menu.description
+        menu.image = model_menu.image
+        model_menu_items = MenuItem.objects.filter(
+            menu=model_menu).order_by('position')
+
+        for model_menu_item in model_menu_items:
+            menu_item = MenuViewModelItem()
+            menu_item.name = model_menu_item.name
+            menu_item.description = model_menu_item.description
+            menu_item.price = model_menu_item.price
+
+            menu.items.append(menu_item)
+
+        menus.append(menu)
+
+    return menus
