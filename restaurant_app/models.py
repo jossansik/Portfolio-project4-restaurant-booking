@@ -53,6 +53,8 @@ class MenuItem(models.Model):
     menu = models.ForeignKey(
         Menu, on_delete=models.CASCADE, related_name='menu_items')
     position = models.IntegerField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name}"

@@ -17,9 +17,11 @@ class ReservationAdmin(admin.ModelAdmin):
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'type', 'position',)
+    list_filter = ('type', 'created_on',)
 
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'menu', 'price', 'position',)
+    list_filter = ('menu', 'created_on',)

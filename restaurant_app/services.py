@@ -49,11 +49,11 @@ def make_reservation(user, table_id, reservation_start_date, num_guests, guest_f
         raise ValidationError(
             "Table does not support the requested guest count")
 
-    end_date = reservation_start_date + timedelta(minutes=30)
-    existingReservation = Reservation.objects.filter(
+    end_date = reservation_start_date + timedelta(minutes=59, seconds=59)
+    existing_reservation = Reservation.objects.filter(
         table=table, reserved_start_date__gte=reservation_start_date, reserved_start_date__lt=end_date)
 
-    if (existingReservation.exists()):
+    if (existing_reservation.exists()):
         raise ValidationError("Table is already reserved")
 
     reservation = Reservation.objects.create(
@@ -67,23 +67,23 @@ def get_timeslots(num_guests, date):
     end_date = datetime(date.year, date.month, date.day,
                         23, 59, tzinfo=pytz.UTC)
     tables = Table.objects.filter(capacity__gte=num_guests)
-    reservedTableTimeslots = []
+    reserved_table_timeslots = []
     for table in tables:
-        existingReservations = Reservation.objects.filter(
+        existing_reservations = Reservation.objects.filter(
             table=table, reserved_start_date__gte=start_date, reserved_start_date__lte=end_date)
 
         for hour in range(MIN_HOUR, MAX_HOUR):
-            reservedTableTimeslot = ReservedTableTimeSlot()
-            reservedTableTimeslot.time = hour
-            reservedTableTimeslot.reservedTable = ReservedTable()
-            reservedTableTimeslot.reservedTable.id = table.id
+            reserved_table_timeslot = ReservedTableTimeSlot()
+            reserved_table_timeslot.time = hour
+            reserved_table_timeslot.reservedTable = ReservedTable()
+            reserved_table_timeslot.reservedTable.id = table.id
 
-            if any(x.reserved_start_date.hour == hour for x in existingReservations):
-                reservedTableTimeslot.reservedTable.is_reserved = True
+            if any(x.reserved_start_date.hour == hour for x in existing_reservations):
+                reserved_table_timeslot.reservedTable.is_reserved = True
             else:
-                reservedTableTimeslot.reservedTable.is_reserved = False
+                reserved_table_timeslot.reservedTable.is_reserved = False
 
-            reservedTableTimeslots.append(reservedTableTimeslot)
+            reserved_table_timeslots.append(reserved_table_timeslot)
 
     timeslots = []
     for hour in range(MIN_HOUR, MAX_HOUR):
@@ -92,18 +92,18 @@ def get_timeslots(num_guests, date):
             date.year, date.month, date.day, hour, tzinfo=pytz.UTC)
         timeslot.num_guests = num_guests
 
-        reservedTableTimeslotsForHour = (
-            x for x in reservedTableTimeslots if x.time == hour)
+        reserved_table_timeslots_for_hour = (
+            x for x in reserved_table_timeslots if x.time == hour)
         is_reserved = all(v.reservedTable.is_reserved ==
-                          True for v in reservedTableTimeslotsForHour)
+                          True for v in reserved_table_timeslots_for_hour)
 
         if is_reserved:
             timeslot.is_reserved = True
         else:
-            randomTablesInAvailableHour = (
-                x for x in reservedTableTimeslots if x.time == hour)
+            random_tables_in_available_hour = (
+                x for x in reserved_table_timeslots if x.time == hour)
             timeslot.table_id = int(
-                list(randomTablesInAvailableHour)[0].reservedTable.id)
+                list(random_tables_in_available_hour)[0].reservedTable.id)
             timeslot.is_reserved = False
 
         timeslots.append(timeslot)
