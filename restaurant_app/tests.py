@@ -76,9 +76,9 @@ class ReserveTableTest(TestCase):
         user_want_to_reservate = User.objects.create_user(
             "Janne", 'janne@svensson.com', 'testpassword')
         user_want_to_reservate_guest_fullname = 'Super Duper'
-        new_start_date = datetime(year=date.year,
-                                  month=date.month, day=date.day,
-                                  hour=date.hour, minute=59, second=59, tzinfo=pytz.UTC)
+        new_start_date = datetime(year=start_date.year,
+                                  month=start_date.month, day=start_date.day,
+                                  hour=start_date.hour, minute=59, second=59, tzinfo=pytz.UTC)
 
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
@@ -133,8 +133,8 @@ class ReserveTableTest(TestCase):
         # Arrange
         date = datetime.now(tz=pytz.UTC)
         reserved_start_date = datetime(year=date.year,
-                                     month=date.month, day=date.day,
-                                     hour=12, minute=0, tzinfo=pytz.UTC)
+                                       month=date.month, day=date.day,
+                                       hour=12, minute=0, tzinfo=pytz.UTC)
         prev_booking_date = reserved_start_date - timedelta(days=1)
         capacity = 4
         number_of_guests = 2
