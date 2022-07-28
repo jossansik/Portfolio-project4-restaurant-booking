@@ -39,7 +39,10 @@ class ReserveTableTest(TestCase):
 
     def test_guest_can_reserve_available_table(self):
         # Arrange
-        reserved_start_date = datetime.now(tz=pytz.UTC)
+        date = datetime.now(tz=pytz.UTC)
+        start_date = datetime(year=date.year,
+                              month=date.month, day=date.day,
+                              hour=0, minute=0, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
@@ -49,16 +52,19 @@ class ReserveTableTest(TestCase):
 
         # Act
         reservation = make_reservation(
-            user_with_reservation, table.id, reserved_start_date, number_of_guests, guest_fullname)
+            user_with_reservation, table.id, start_date, number_of_guests, guest_fullname)
 
         # Assert
-        self.assertEqual(reservation.reserved_start_date, reserved_start_date)
+        self.assertEqual(reservation.reserved_start_date, start_date)
         self.assertEqual(reservation.num_guests, number_of_guests)
         self.assertEqual(reservation.table.capacity, capacity)
 
     def test_guest_cannot_reserve_booked_table_at_fully_booked_time(self):
         # Arrange
-        reserved_start_date = datetime.now(tz=pytz.UTC)
+        date = datetime.now(tz=pytz.UTC)
+        start_date = datetime(year=date.year,
+                              month=date.month, day=date.day,
+                              hour=12, minute=0, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
@@ -66,20 +72,26 @@ class ReserveTableTest(TestCase):
             "Sven", 'sven@ripa.com', 'testpassword')
         guest_fullname = 'Karl Swedensson'
         Reservation.objects.create(guest=user_with_reservation, table=table,
-                                   num_guests=number_of_guests, reserved_start_date=reserved_start_date, guest_fullname=guest_fullname)
+                                   num_guests=number_of_guests, reserved_start_date=start_date, guest_fullname=guest_fullname)
         user_want_to_reservate = User.objects.create_user(
             "Janne", 'janne@svensson.com', 'testpassword')
         user_want_to_reservate_guest_fullname = 'Super Duper'
+        new_start_date = datetime(year=date.year,
+                                  month=date.month, day=date.day,
+                                  hour=date.hour, minute=59, second=59, tzinfo=pytz.UTC)
 
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
             make_reservation(user_want_to_reservate, table.id,
-                             reserved_start_date, number_of_guests, user_want_to_reservate_guest_fullname)
+                             new_start_date, number_of_guests, user_want_to_reservate_guest_fullname)
         self.assertTrue('Table is already reserved' in str(context.exception))
 
     def test_guest_cannot_reserve_table_without_capacity(self):
         # Arrange
-        reserved_start_date = datetime.now(tz=pytz.UTC)
+        date = datetime.now(tz=pytz.UTC)
+        start_date = datetime(year=date.year,
+                              month=date.month, day=date.day,
+                              hour=12, minute=0, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 5
         table = Table.objects.create(name="Table 1", capacity=capacity)
@@ -89,15 +101,18 @@ class ReserveTableTest(TestCase):
 
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
-            make_reservation(user, table.id, reserved_start_date,
+            make_reservation(user, table.id, start_date,
                              number_of_guests, guest_fullname)
         self.assertTrue(
             'Table does not support the requested guest count' in str(context.exception))
 
     def test_guest_cannot_have_multiple_active_reservations(self):
         # Arrange
-        reserved_start_date = datetime.now(tz=pytz.UTC) + timedelta(hours=1)
-        prev_booking_date = reserved_start_date
+        date = datetime.now(tz=pytz.UTC)
+        prev_booking_date = datetime(year=date.year,
+                                     month=date.month, day=date.day,
+                                     hour=date.hour, minute=0, tzinfo=pytz.UTC)
+        reserved_start_date = datetime.now(tz=pytz.UTC) + timedelta(days=2)
         capacity = 4
         number_of_guests = 2
         table = Table.objects.create(name="Table 1", capacity=capacity)
@@ -116,7 +131,10 @@ class ReserveTableTest(TestCase):
 
     def test_guest_can_have_a_previous_reservation_and_make_a_new(self):
         # Arrange
-        reserved_start_date = datetime.now(tz=pytz.UTC)
+        date = datetime.now(tz=pytz.UTC)
+        reserved_start_date = datetime(year=date.year,
+                                     month=date.month, day=date.day,
+                                     hour=12, minute=0, tzinfo=pytz.UTC)
         prev_booking_date = reserved_start_date - timedelta(days=1)
         capacity = 4
         number_of_guests = 2

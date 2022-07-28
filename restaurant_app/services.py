@@ -38,10 +38,15 @@ class MenuViewModelItem:
         self.price = 0,
 
 
-def make_reservation(user, table_id, reservation_start_date, num_guests, guest_fullname):
+def make_reservation(user, table_id, start_date, num_guests, guest_fullname):
+    start_date = datetime(year=start_date.year, month=start_date.month, day=start_date.day,
+                          hour=start_date.hour, minute=0, tzinfo=pytz.UTC)
     table = Table.objects.get(pk=table_id)
 
-    if any(Reservation.objects.filter(guest=user, reserved_start_date__gte=datetime.now(tz=pytz.UTC))):
+    current_date = datetime.now(tz=pytz.UTC)
+    unbookable_date_from = datetime(year=current_date.year, month=current_date.month,
+                                    day=current_date.day, hour=current_date.hour, minute=0, tzinfo=pytz.UTC)
+    if any(Reservation.objects.filter(guest=user, reserved_start_date__gte=unbookable_date_from)):
         raise ValidationError(
             "You already have a reservation. Go to My reservation to view it.")
 
@@ -49,15 +54,16 @@ def make_reservation(user, table_id, reservation_start_date, num_guests, guest_f
         raise ValidationError(
             "Table does not support the requested guest count")
 
-    end_date = reservation_start_date + timedelta(minutes=59, seconds=59)
+    end_date = start_date + timedelta(hours=1)
+
     existing_reservation = Reservation.objects.filter(
-        table=table, reserved_start_date__gte=reservation_start_date, reserved_start_date__lt=end_date)
+        table=table, reserved_start_date__gte=start_date, reserved_start_date__lt=end_date)
 
     if (existing_reservation.exists()):
         raise ValidationError("Table is already reserved")
 
     reservation = Reservation.objects.create(
-        guest=user, table=table, num_guests=num_guests, reserved_start_date=reservation_start_date, guest_fullname=guest_fullname)
+        guest=user, table=table, num_guests=num_guests, reserved_start_date=start_date, guest_fullname=guest_fullname)
 
     return reservation
 
