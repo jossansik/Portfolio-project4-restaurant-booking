@@ -48,7 +48,7 @@ class Menu(models.Model):
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=100)
-    price = models.IntegerField()
+    price = models.CharField(max_length=20)
     description = models.CharField(max_length=300, blank=True)
     menu = models.ForeignKey(
         Menu, on_delete=models.CASCADE, related_name='menu_items')
