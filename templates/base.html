@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Restaurant Le Fleur</title>
@@ -18,7 +18,7 @@
             <a aria-current="page" href="{% url 'home' %}">Restaurant Le Fleur</a>
         </div>
         <input id="menu-toggle" type="checkbox" />
-        <label class='menu-button-container' for="menu-toggle">
+        <label class="menu-button-container" for="menu-toggle">
             <div class='menu-button'></div>
         </label>
         <ul class="menu">
@@ -49,12 +49,12 @@
         </ul>
     </nav>
     <main>
-        <section class="container">
+        <div class="container">
             <div class="row justify-content-center">
                 {% block content %}
                 {% endblock content %}
             </div>
-        </section>
+        </div>
     </main>
     <footer class="mt-auto">
         <div class="d-flex justify-content-between">
