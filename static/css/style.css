@@ -44,9 +44,12 @@ p {
 
 .btn-primary,
 .btn-primary:active,
-.btn-primary:visited,
 .btn-primary:focus {
     background-color: #8EC137;
+}
+
+.btn-primary:visited {
+    border-color: #8EC137;
 }
 
 .btn-primary:hover {
@@ -154,6 +157,32 @@ p {
 .hero-lefleur {
     max-width: 300px;
     margin-top: -0.50rem !important;
+}
+
+.flower {
+    width: 100%;
+    height: auto;
+    display: flex;
+    margin: auto;
+    max-width: 100px;
+}
+
+.social-media-icon {
+    width: 100%;
+    height: auto;
+    max-width: 25px;
+}
+
+.menu-header {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+}
+
+.menu-image {
+    width: 100%;
+    height: auto;
+    max-width: 75px;
 }
 
 .timeslot-select a {
