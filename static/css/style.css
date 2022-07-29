@@ -47,7 +47,6 @@ p {
 .btn-primary:visited,
 .btn-primary:focus {
     background-color: #8EC137;
-    border-color: #8EC137;
 }
 
 .btn-primary:hover {
