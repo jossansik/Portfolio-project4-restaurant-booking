@@ -101,35 +101,128 @@ Features for (superadmin) [adminwebsite](https://restaurant-lefleur.herokuapp.co
 ## Site owners goals
 
 ### Super admin goals
+
 - Create staff member as super administrator:
+
 ![Create staff member](https://user-images.githubusercontent.com/92020968/181730923-cb622079-5468-4817-a10c-34b84e77bf45.png)
 
 - Create a group (staff) with restrictions for tables/reservations/menus/menu items:
+
 ![Create staff group](https://user-images.githubusercontent.com/92020968/181730866-c56ae405-ee0b-469a-8e7e-b1609269a2b0.png)
 
 - Add staff member to group (staff):
+
 ![Add staff member to group](https://user-images.githubusercontent.com/92020968/181731210-29579afc-cff0-44e6-9508-184f95d53b4a.png)
 
 ### Staff goals
 - Manage tables:
+
 ![Tables](https://user-images.githubusercontent.com/92020968/181730089-a2febf21-1974-4911-9acc-d5491631203e.png)
+
 ![Change table](https://user-images.githubusercontent.com/92020968/181730298-4072e727-3830-48f6-b156-173ab312a680.png)
 
 - Manage reservations (Confirm booking):
+
 ![List reservations](https://user-images.githubusercontent.com/92020968/181732517-009e0f03-29f0-4abe-9fad-a3870813c0ae.png)
+
 ![Reservations](https://user-images.githubusercontent.com/92020968/181730173-4525cf82-1276-4569-b943-18de9168e96e.png)
 
 - Manage menus:
+
 ![List filer menus](https://user-images.githubusercontent.com/92020968/181732024-aea7b99f-6a48-4d3f-9e8e-6a0b95e9694d.png)
+
 ![Add menu](https://user-images.githubusercontent.com/92020968/181731621-e94b4bad-1bc9-45f3-883b-d9285e1a78ba.png)
 
 - Manage menu items:
-![List filter menu items](https://user-images.githubusercontent.com/92020968/181732203-3e1e6400-acfe-42c6-903b-55a804bc2be6.png)
-![Add menu item](https://user-images.githubusercontent.com/92020968/181731685-bc7e0bf1-2d37-4018-9607-9eb6f693b487.png)
 
+![List filter menu items](https://user-images.githubusercontent.com/92020968/181732203-3e1e6400-acfe-42c6-903b-55a804bc2be6.png)
+
+![Add menu item](https://user-images.githubusercontent.com/92020968/181731685-bc7e0bf1-2d37-4018-9607-9eb6f693b487.png)
 
 ## User experience
 
+- First page:
+
+![First page](https://user-images.githubusercontent.com/92020968/181742483-00149986-d6ae-4ad5-b478-deb476844e61.png)
+
+- Navigation menu in logged in state:
+
+![Header logged in](https://user-images.githubusercontent.com/92020968/181748737-38d839bf-8591-4481-a42e-d915cbe5bbcc.png)
+
+- Navigation menu when not logged in:
+
+![Header not logged in](https://user-images.githubusercontent.com/92020968/181748863-89955f79-7293-47b1-989a-c639f74b3899.png)
+
+- Logout confirmation:
+
+![Logout confirmation](https://user-images.githubusercontent.com/92020968/181749220-a4f964b5-02e1-415e-ba12-c59b9cdf00d7.png)
+
+- Drinks menu:
+
+![Drinks menu](https://user-images.githubusercontent.com/92020968/181749476-f4b13b4f-f5f9-4677-bdeb-db2896cde509.png)
+
+- Food menu:
+
+![Food menu](https://user-images.githubusercontent.com/92020968/181749595-41c9a90c-2438-4e36-8e55-935bbfbd77e4.png)
+
+### Reservation flow
+
+- 'Book a table' takes the guest to log in page and in case they don't have an accout they will have to register:
+
+![Book_table_login_register](https://user-images.githubusercontent.com/92020968/181743347-c3033d7a-cba4-47b4-aa5f-ffbd86b153c7.png)
+
+- 'Book a table' register page will redirect the guest to booking page after registration:
+
+![Booking register](https://user-images.githubusercontent.com/92020968/181743502-1e343f2c-bce5-4836-a8d8-5f7817f0f6e1.png)
+
+- Pick date and number of guests to get available times:
+
+![Book a table step 1](https://user-images.githubusercontent.com/92020968/181743943-4f2e7407-14fb-4dce-b652-d10fec7fa130.png)
+
+Datepicker:
+
+![Book a table step 1 datepicker](https://user-images.githubusercontent.com/92020968/181744121-63dc5004-7c66-4cbe-8e1b-74af96b13ab7.png)
+
+Number of guests dropdown:
+
+![Book a table step 1 select guest count](https://user-images.githubusercontent.com/92020968/181744215-82a1e8d7-bbc3-434d-a8e9-a757a5655efe.png)
+
+- Guest can pick a time or repick date and number of guests and can see if certain times are fully booked:
+
+![Book a table step 1 pick time booked](https://user-images.githubusercontent.com/92020968/181745819-cb8fe399-5d8e-4e84-b7a0-b18aaa54be98.png)
+
+- Guest views details and fills in the name that will be on the reservation:
+
+![Book a table step 2 name and view details](https://user-images.githubusercontent.com/92020968/181744846-61fa9b58-a7be-4a59-8636-a003f27252f5.png)
+
+If the guest already has made a reservation it is not possible to make another one without cancelling the first:
+![Book a table step 2 user already has a reservation](https://user-images.githubusercontent.com/92020968/181745989-1a5c3630-eff5-4d8f-9443-ed408c6b058c.png)
+
+If a table is beeing booked before user place their reservation this message will show (it is also not possible to tinker with the url to bypass it if the table is already booked):
+
+![Book a table step 2 alread reserved](https://user-images.githubusercontent.com/92020968/181747163-d57ae2de-1c67-478e-a7a9-9d8ddca2d629.png)
+
+- Upon clicking on place reservation the guest gets redirected to this page:
+
+![Book a table step 3 success](https://user-images.githubusercontent.com/92020968/181745351-17af209c-e6c8-4fd6-9998-e6d43d11e745.png)
+
+- Guest can view their reservation:
+
+No active reservation:
+
+![No active reservation](https://user-images.githubusercontent.com/92020968/181746846-755fc507-b592-40c1-8785-3e52e30edf53.png)
+
+Active reservation:
+
+![View my reservation](https://user-images.githubusercontent.com/92020968/181746341-1c2005dc-c73f-4bbd-a457-73ecda0b8db6.png)
+
+- Guest gets a confirmation message upon clicking cancel reservation:
+
+![Cancel reservation confirmation](https://user-images.githubusercontent.com/92020968/181746490-7382a3f3-9679-4fd0-9a13-81f13e048ba3.png)
+
+- Guests gets a message when the cancellation is completed:
+
+![Cancelled reservation](https://user-images.githubusercontent.com/92020968/181746619-8637cc53-0153-4499-a209-16ddc661918b.png)
 
 ## Testing
 
