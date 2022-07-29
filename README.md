@@ -1,4 +1,5 @@
-# Portfolio-project4-restaurant-booking
+# Portfolio Project 4 Restaurant booking system and website
+
 Le fleur fictive restaurant website with booking system.
  
 ## Table of contents
@@ -7,10 +8,8 @@ Le fleur fictive restaurant website with booking system.
 * [Technology](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Technology)
 * [Setup](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Setup)
 * [UX design](https://github.com/jossansik/Portfolio-project4-restaurant-booking#UX-design)
-* [Features](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Features)
-* [Site owners goals](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Site-owner-goals)
-* [User goals](https://github.com/jossansik/Portfolio-project4-restaurant-booking#User-goals)
-* [User experience](https://github.com/jossansik/Portfolio-project4-restaurant-booking#User-experience)
+* [Features & site goals](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Features-&-site-goals)
+* [Site experience](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Site-experience)
 * [Testing](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Testing)
 * [Bugs](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Bugs)
 * [Validator testing](https://github.com/jossansik/Portfolio-project4-restaurant-booking#Validator-testing)
@@ -61,7 +60,7 @@ The mockups below show the menu pages designs
 
 ![menu_mockups](https://user-images.githubusercontent.com/92020968/181278758-71ca3a3f-2e72-4297-b035-fcb259cb118e.png)
 
-Business Vision:
+### Business Vision:
 
 Description: The vision is to create a restaurant booking platform for restaurant guests as well as owners to simplify the process for booking tables. In the impact map and flow chart below, I have described the goals, actions & impacts for two different target groups for this app. The goal applies to both groups, ie increased number of tables booked. 
 
@@ -79,7 +78,9 @@ The impact map below is based on the Business Vision
 The chart below show outcome, action & result and is based on the Business Vision
 ![booking_system_flowchart1](https://user-images.githubusercontent.com/92020968/181255488-80750f1f-cb7c-4aed-ba13-1200961c7168.png)
 
-## Features
+## Features & site goals
+
+### User goals
 
 Features for [website](https://restaurant-lefleur.herokuapp.com/):
 - Guests can register for an account to reserve tables
@@ -88,19 +89,23 @@ Features for [website](https://restaurant-lefleur.herokuapp.com/):
 - Logged in guests can view their reservation
 - Logged in guests can cancel their reservation
 
+### Site owner goals
+
 Features for (staff) [adminwebsite](https://restaurant-lefleur.herokuapp.com/admin)
 - Can manage tables
 - Can manage reservations (CRUD + confirm reservation)
 - Can manage menus
 - Can manage menu items
 
+### Site admin goals
+
 Features for (superadmin) [adminwebsite](https://restaurant-lefleur.herokuapp.com/admin)
 - Has full access to system and can therefore manage staff.
 - Can manage groups for staff with restrictions for tables/reservations/menus/menu items
 
-## Site owners goals
+## Site experience
 
-### Super admin goals
+### Super admin experience
 
 - Create staff member as super administrator:
 
@@ -114,7 +119,7 @@ Features for (superadmin) [adminwebsite](https://restaurant-lefleur.herokuapp.co
 
 ![Add staff member to group](https://user-images.githubusercontent.com/92020968/181731210-29579afc-cff0-44e6-9508-184f95d53b4a.png)
 
-### Staff goals
+### Staff experience
 - Manage tables:
 
 ![Tables](https://user-images.githubusercontent.com/92020968/181730089-a2febf21-1974-4911-9acc-d5491631203e.png)
@@ -135,7 +140,7 @@ Features for (superadmin) [adminwebsite](https://restaurant-lefleur.herokuapp.co
 
 - Manage menu items:
 
-![List filter menu items](https://user-images.githubusercontent.com/92020968/181732203-3e1e6400-acfe-42c6-903b-55a804bc2be6.png)
+![List menu items](https://user-images.githubusercontent.com/92020968/181752351-b23570d7-d671-46d2-98b7-68a00173a89c.png)
 
 ![Add menu item](https://user-images.githubusercontent.com/92020968/181731685-bc7e0bf1-2d37-4018-9607-9eb6f693b487.png)
 
@@ -153,25 +158,29 @@ Features for (superadmin) [adminwebsite](https://restaurant-lefleur.herokuapp.co
 
 ![Header not logged in](https://user-images.githubusercontent.com/92020968/181748863-89955f79-7293-47b1-989a-c639f74b3899.png)
 
-- Logout confirmation:
+- Logout confirmation page:
 
 ![Logout confirmation](https://user-images.githubusercontent.com/92020968/181749220-a4f964b5-02e1-415e-ba12-c59b9cdf00d7.png)
 
-- Drinks menu:
+- Drinks menu page:
 
 ![Drinks menu](https://user-images.githubusercontent.com/92020968/181749476-f4b13b4f-f5f9-4677-bdeb-db2896cde509.png)
 
-- Food menu:
+- Food menu page:
 
 ![Food menu](https://user-images.githubusercontent.com/92020968/181749595-41c9a90c-2438-4e36-8e55-935bbfbd77e4.png)
 
+- About page:
+
+![About page](https://user-images.githubusercontent.com/92020968/181750270-62cefbc4-c9a4-4534-9c2e-0ac37c351012.png)
+
 ### Reservation flow
 
-- 'Book a table' takes the guest to log in page and in case they don't have an accout they will have to register:
+- 'Book a table' button on start page or table booking option in navigation menu takes the guest to log in page and in case they don't have an accout they will have to register:
 
 ![Book_table_login_register](https://user-images.githubusercontent.com/92020968/181743347-c3033d7a-cba4-47b4-aa5f-ffbd86b153c7.png)
 
-- 'Book a table' register page will redirect the guest to booking page after registration:
+- After registration the guest is redirected to the booking page:
 
 ![Booking register](https://user-images.githubusercontent.com/92020968/181743502-1e343f2c-bce5-4836-a8d8-5f7817f0f6e1.png)
 
@@ -196,6 +205,7 @@ Number of guests dropdown:
 ![Book a table step 2 name and view details](https://user-images.githubusercontent.com/92020968/181744846-61fa9b58-a7be-4a59-8636-a003f27252f5.png)
 
 If the guest already has made a reservation it is not possible to make another one without cancelling the first:
+
 ![Book a table step 2 user already has a reservation](https://user-images.githubusercontent.com/92020968/181745989-1a5c3630-eff5-4d8f-9443-ed408c6b058c.png)
 
 If a table is beeing booked before user place their reservation this message will show (it is also not possible to tinker with the url to bypass it if the table is already booked):
@@ -226,58 +236,159 @@ Active reservation:
 
 ## Testing
 
-Python tests is located in restaurant_app/tests.py and tests mostly functions in services.py.
+### Python tests
 
-Tests for table reservations is located in: ReserveTableTest.
-1. test_guest_can_reserve_available_table
-  This tests that a guest can reserve an available table with allowed capacity in specified date and time.
-2. test_guest_cannot_reserve_booked_table_at_fully_booked_time
-  This tests that a guest cannot reserve a table which is fully booked at specific date and time.
-3. test_guest_cannot_reserve_table_without_capacity
-  This tests that user cannot reserve a table which does not fullfil the capacity of the guest count.
-4. test_guest_cannot_have_multiple_active_reservations
-  This tests that a user cannot have multiple reservations in future date and time.
-5. test_guest_can_have_a_previous_reservation_and_make_a_new
-  This tests that a user can reserve a table even though he/she got a reservation in previous date and time.
+Located in restaurant_app/tests.py and tests mostly functions in services.py.
 
-Tests for reservation timeslots can be found in: ReservationTimesTest.
-1. test_guest_can_list_reservations
-  This tests that a guest can receive a list of reservation timeslots.
-2. test_guest_can_view_available_table_for_timeslots
-  When there are multiple tables with requested capacities,
-  Only one table is reserved by a guest,
-  Guest should be able to reserve available table.
-3. test_guest_can_view_reserved_timeslots
-  This tests that a guest can see reserved and available tables.
+#### Tests for table reservations is located in: ReserveTableTest.
 
-Tests for menu and menu items can be found in: MenusTests.
-1. test_get_menu_with_items_in_position
-  This tests that the created menu and the menu items is received as expected.
-  With a connection between menu and menu item and with the correct position ordering.
+1. test_guest_can_reserve_available_table:
 
-Javascript tests is located in static/scripts/__tests__/.
+This tests that a guest can reserve an available table with allowed capacity in specified date and time.
 
-Tests for booking cancellation is located in: myreservation.test.js.
-Cancel reservation tests/
-1. Click on cancel reservation/Expects confirmation modal to show
-  This tests that jquery is triggering a confirmation dialog to open.
-2. Click on 'Yes' in confirmation modal/Expects modal to show
-  This tests that jquery is triggering a form submit action and closing modal dialog.
-3. Click on 'No' in confirmation modal
-  This tests that jquery is triggering a close of confirmation dialog.
+3. test_guest_cannot_reserve_booked_table_at_fully_booked_time:
+
+This tests that a guest cannot reserve a table which is fully booked at specific date and time.
+
+5. test_guest_cannot_reserve_table_without_capacity:
+
+This tests that user cannot reserve a table which does not fullfil the capacity of the guest count.
+
+7. test_guest_cannot_have_multiple_active_reservations:
+
+This tests that a user cannot have multiple reservations in future date and time.
+
+5. test_guest_can_have_a_previous_reservation_and_make_a_new:
+
+This tests that a user can reserve a table even though he/she got a reservation in previous date and time.
+
+#### Tests for reservation timeslots can be found in: ReservationTimesTest.
+
+1. test_guest_can_list_reservations:
+
+This tests that a guest can receive a list of reservation timeslots.
+
+2. test_guest_can_view_available_table_for_timeslots:
+
+When there are multiple tables with requested capacities,
+Only one table is reserved by a guest,
+Guest should be able to reserve available table.
+
+3. test_guest_can_view_reserved_timeslots:
+
+This tests that a guest can see reserved and available tables.
+
+#### Tests for menu and menu items can be found in: MenusTests.
+
+1. test_get_menu_with_items_in_position:
+
+This tests that the created menu and the menu items is received as expected.
+With a connection between menu and menu item and with the correct position ordering.
+
+### Javascript tests
+
+Located in static/scripts/__tests__/.
+
+#### Tests for booking cancellation is located in: myreservation.test.js.
+
+##### Cancel reservation tests:
+
+1. Click on cancel reservation/Expects confirmation modal to show:
+
+This tests that jquery is triggering a confirmation dialog to open.
+
+2. Click on 'Yes' in confirmation modal/Expects modal to show:
+
+This tests that jquery is triggering a form submit action and closing modal dialog.
+
+3. Click on 'No' in confirmation modal:
+
+This tests that jquery is triggering a close of confirmation dialog.
 
 ## Bugs
 
+Bugs found and fixed during the development process:
+
+[BUG: User can have multiple reservations](https://github.com/jossansik/Portfolio-project4-restaurant-booking/issues/15)
+
+[BUG: Prevent guest from manipulating reservation time](https://github.com/jossansik/Portfolio-project4-restaurant-booking/issues/17)
+
+Because Jigsaw validator warned about font awesome stylesheet these icons have been removed and replaced with static images. These social media icons are not links and therefore do not lead anywhere since this is not a real restaurant.
+
+Unresolved issue:
+
+Due to html not supporting module javascript there is an error in the 'My reservation' page. This is because jest-test-library requires 'module' to be used to fetch the javscript into the test javascript class.
+
+It is possible to use 'default export' as an option for the javascript to run, but then the test won't run and vice versa.
+
+This doesn't effect the user experience, see image below:
+
+![Javscript error in my reservation](https://user-images.githubusercontent.com/92020968/181754042-7abb7a79-6202-4412-931f-1b96e5c05441.png)
+
 ## Validator testing
 
+### Python validation
+All the python files pass validator testing pep8online without issues, except for the settings.py file in restaurant_project which is auto-generated by django. This file gets 'E501 line too long' on AUTH_PASSWORD_VALIDATORS. I do not like to change this since it is auto-generated.
+
+![pep8_validation](https://user-images.githubusercontent.com/92020968/181763626-c7229c1e-ba16-4e0f-867a-b63333f0998e.png)
+
+### Css validation:
+
+When validating the style.css file separatly this is the result:
+
+![Jigsaw](https://user-images.githubusercontent.com/92020968/181765339-a2780c28-0d8d-44b6-acf0-dc3fa1c7cda7.png)
+
+Jigsaw warns about google font import which is as expected:
+
+![Jigsaw warning](https://user-images.githubusercontent.com/92020968/181765484-60c83e29-99ea-4cad-8f93-4e67374cac1d.png)
+
+When validating the uri this is the result:
+
+![Jigsaw warns about 3 party](https://user-images.githubusercontent.com/92020968/181768056-03a59545-92a4-4577-b169-d3a6444b99bb.png)
+
+Jigsaw warns about 3-party (bootstrap) library which I cannot affect:
+
+![Bootstrap css warning](https://user-images.githubusercontent.com/92020968/181768266-79ec2128-06da-4b9a-9baa-d419fbe1e735.png)
+
+### Html validation:
+
+[validator.w3.org](https://validator.w3.org/) gives no warnings or errors:
+
+![wc3 html validator](https://user-images.githubusercontent.com/92020968/181773775-d93ec053-0baa-439e-8769-cd20d10ed789.png)
 
 ## Accessibility
 
+Lighthouse audit (when run in icognito mode) gives the following result:
+
+![Lighthouse result](https://user-images.githubusercontent.com/92020968/181774560-b01c65e4-4146-4b30-917c-b1df38fbbc85.png)
 
 ## Deployment
 
+Initial step for creating a app in Heroku:
 
+- Created an account on Heroku.com (from the Heroku dashboard clicked the “Create new app” button).
+- Named the app "restaurant-lefleur"
+- Selected region (Europe), then clicked “Create app”. 
 
+Using Heroku for deployment, here is the overview:
+
+![Overview of heroku app](https://user-images.githubusercontent.com/92020968/181755017-095c572a-75fb-48b5-bf8c-87c7161c2110.png)
+
+The settings in Heroku for my app:
+
+![Heroku app settings](https://user-images.githubusercontent.com/92020968/181755414-4dffdbda-388b-4e21-a277-80a004aa5555.png)
+
+Procfile generates Resources in Heroku (running py tests before deployment):
+
+![Resource Procfile](https://user-images.githubusercontent.com/92020968/181756382-4d932971-36f1-4d71-a50d-a9d524f100b3.png)
+
+Heroku built the app using the code in my Github repository:
+
+![Deployment information](https://user-images.githubusercontent.com/92020968/181755529-200ff541-2972-4808-b7e8-19165f4c74c5.png)
+
+To deploy I use auto deployment on main-branch, but I can also deploy manually using this button in deployment section:
+
+![Deployment action](https://user-images.githubusercontent.com/92020968/181755758-aba22d94-712e-484b-aa67-64335e913ba6.png)
 
 ## Credits
 Wireframes and mockups, as well as images and vectors used on the website were made using [Figma](https://figma.com/)
@@ -285,3 +396,7 @@ Wireframes and mockups, as well as images and vectors used on the website were m
 Flowcharts were made using [FigJam](https://figma.com/figjam)
 
 The menu page icons are from [The Noun Project](https://thenounproject.com/)
+
+Hamburger menu is based on [this](https://alvarotrigo.com/blog/hamburger-menu-css/)
+
+The social media icons are from [this](https://www.figma.com/file/jOsC1XevI7vCmQq1o0gCZ7/Social-Media-and-Tech-Company-Icons-v1.0-(Community)?node-id=5%3A37) figma community
