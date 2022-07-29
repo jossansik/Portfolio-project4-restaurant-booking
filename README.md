@@ -25,6 +25,10 @@ For this project I have designed and built a website for a fictive restaurant wi
 
 The Restaurant's home page is created as a sort of landing page with a single call to action and the ambition to make people book tables and visit the restaurant. It has been customized for the user experience in regards to content, design, structure and copy, and feature a fully functional Python+Django based booking system with admin site.
 
+As Agile methodology during the development process of planning and designing this project Github Issues was used for user stories and Github Projects for kanban board.
+
+The board is found [here](https://github.com/users/jossansik/projects/5)
+
 ## Technology
 
 This project is built with Python+Django, JavaScript (Jest as testing library), HTML & CSS (with Bootstrap 5), using [Heroku Postgres](https://www.heroku.com/postgres) as relational database. The application is run, operated and deployed through Heroku.
