@@ -20,12 +20,15 @@ class TableTest(TestCase):
 
 class ReservationTest(TestCase):
 
-    def create_reservation(self, tableCapacity=3, username="Kons", num_guests=3, reserved_start_date=datetime.now(tz=pytz.UTC)):
+    def create_reservation(
+            self, tableCapacity=3, username="Kons",
+            num_guests=3, reserved_start_date=datetime.now(tz=pytz.UTC)):
         table = Table.objects.create(capacity=tableCapacity)
         user = User.objects.create_user(
             username, 'blah@blah.com', 'testpassword')
         reservation = Reservation.objects.create(
-            guest=user, table=table, num_guests=num_guests, reserved_start_date=reserved_start_date)
+            guest=user, table=table, num_guests=num_guests,
+            reserved_start_date=reserved_start_date)
         return reservation
 
     def test_guest_can_reservate_table(self):
@@ -40,9 +43,9 @@ class ReserveTableTest(TestCase):
     def test_guest_can_reserve_available_table(self):
         # Arrange
         date = datetime.now(tz=pytz.UTC)
-        start_date = datetime(year=date.year,
-                              month=date.month, day=date.day,
-                              hour=0, minute=0, tzinfo=pytz.UTC)
+        start_date = datetime(
+            year=date.year, month=date.month,
+            day=date.day, hour=0, minute=0, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 3
         table = Table.objects.create(capacity=capacity)
@@ -52,7 +55,8 @@ class ReserveTableTest(TestCase):
 
         # Act
         reservation = make_reservation(
-            user_with_reservation, table.id, start_date, number_of_guests, guest_fullname)
+            user_with_reservation, table.id, start_date,
+            number_of_guests, guest_fullname)
 
         # Assert
         self.assertEqual(reservation.reserved_start_date, start_date)
@@ -71,27 +75,32 @@ class ReserveTableTest(TestCase):
         user_with_reservation = User.objects.create_user(
             "Sven", 'sven@ripa.com', 'testpassword')
         guest_fullname = 'Karl Swedensson'
-        Reservation.objects.create(guest=user_with_reservation, table=table,
-                                   num_guests=number_of_guests, reserved_start_date=start_date, guest_fullname=guest_fullname)
+        Reservation.objects.create(
+            guest=user_with_reservation, table=table,
+            num_guests=number_of_guests, reserved_start_date=start_date,
+            guest_fullname=guest_fullname)
         user_want_to_reservate = User.objects.create_user(
             "Janne", 'janne@svensson.com', 'testpassword')
         user_want_to_reservate_guest_fullname = 'Super Duper'
-        new_start_date = datetime(year=start_date.year,
-                                  month=start_date.month, day=start_date.day,
-                                  hour=start_date.hour, minute=59, second=59, tzinfo=pytz.UTC)
+        new_start_date = datetime(
+            year=start_date.year, month=start_date.month,
+            day=start_date.day, hour=start_date.hour,
+            minute=59, second=59, tzinfo=pytz.UTC)
 
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
-            make_reservation(user_want_to_reservate, table.id,
-                             new_start_date, number_of_guests, user_want_to_reservate_guest_fullname)
+            make_reservation(
+                user_want_to_reservate, table.id,
+                new_start_date, number_of_guests,
+                user_want_to_reservate_guest_fullname)
         self.assertTrue('Table is already reserved' in str(context.exception))
 
     def test_guest_cannot_reserve_table_without_capacity(self):
         # Arrange
         date = datetime.now(tz=pytz.UTC)
-        start_date = datetime(year=date.year,
-                              month=date.month, day=date.day,
-                              hour=12, minute=0, tzinfo=pytz.UTC)
+        start_date = datetime(
+            year=date.year, month=date.month,
+            day=date.day, hour=12, minute=0, tzinfo=pytz.UTC)
         capacity = 4
         number_of_guests = 5
         table = Table.objects.create(name="Table 1", capacity=capacity)
@@ -104,14 +113,15 @@ class ReserveTableTest(TestCase):
             make_reservation(user, table.id, start_date,
                              number_of_guests, guest_fullname)
         self.assertTrue(
-            'Table does not support the requested guest count' in str(context.exception))
+            'Table does not support the requested guest count'
+            in str(context.exception))
 
     def test_guest_cannot_have_multiple_active_reservations(self):
         # Arrange
         date = datetime.now(tz=pytz.UTC)
-        prev_booking_date = datetime(year=date.year,
-                                     month=date.month, day=date.day,
-                                     hour=date.hour, minute=0, tzinfo=pytz.UTC)
+        prev_booking_date = datetime(
+            year=date.year, month=date.month,
+            day=date.day, hour=date.hour, minute=0, tzinfo=pytz.UTC)
         reserved_start_date = datetime.now(tz=pytz.UTC) + timedelta(days=2)
         capacity = 4
         number_of_guests = 2
@@ -125,16 +135,18 @@ class ReserveTableTest(TestCase):
         # Act & Assert
         with self.assertRaises(ValidationError) as context:
             make_reservation(
-                user, table.id, reserved_start_date, number_of_guests, guest_fullname)
-        self.assertTrue('You already have a reservation. Go to My reservation to view it.' in str(
-            context.exception))
+                user, table.id, reserved_start_date,
+                number_of_guests, guest_fullname)
+        self.assertTrue(
+            'You already have a reservation. ' +
+            'Go to My reservation to view it.' in str(context.exception))
 
     def test_guest_can_have_a_previous_reservation_and_make_a_new(self):
         # Arrange
         date = datetime.now(tz=pytz.UTC)
-        reserved_start_date = datetime(year=date.year,
-                                       month=date.month, day=date.day,
-                                       hour=12, minute=0, tzinfo=pytz.UTC)
+        reserved_start_date = datetime(
+            year=date.year, month=date.month, day=date.day,
+            hour=12, minute=0, tzinfo=pytz.UTC)
         prev_booking_date = reserved_start_date - timedelta(days=1)
         capacity = 4
         number_of_guests = 2
@@ -147,7 +159,8 @@ class ReserveTableTest(TestCase):
 
         # Act
         reservation = make_reservation(
-            user, table.id, reserved_start_date, number_of_guests, guest_fullname)
+            user, table.id, reserved_start_date,
+            number_of_guests, guest_fullname)
 
         # Assert
         self.assertEqual(reservation.reserved_start_date, reserved_start_date)
@@ -240,14 +253,33 @@ class MenusTests(TestCase):
         # Arrange
         menu2 = Menu.objects.create(type=0, name="SIDE DISHES", position=2)
         MenuItem.objects.create(
-            name="Tempura", price=100, description="Crispy fried vegetable shrimp (6 pcs) served with a dashi, soy sauce & mirin dip.", position=1, menu=menu2)
+            name="Tempura",
+            price=100,
+            description="Crispy fried vegetable shrimp (6 pcs) " +
+            "served with a dashi, soy sauce & mirin dip.",
+            position=1,
+            menu=menu2)
 
         menu1 = Menu.objects.create(
-            type=0, name="SUSHI", description="Served with vegan Miso soup & pickled ginger, topped with roasted sesame seeds.", position=1)
+            type=0,
+            name="SUSHI",
+            description="Served with vegan Miso soup & pickled ginger, " +
+            "topped with roasted sesame seeds.",
+            position=1)
         MenuItem.objects.create(
-            name="12 pcs", price=130, description="4 rolls, 3 vegan sashimi, 2 avocado, 1 tofu, 1 seagrass, 1 sweet red pepper", position=2, menu=menu1)
+            name="12 pcs",
+            price=130,
+            description="4 rolls, 3 vegan sashimi, 2 avocado, 1 tofu, " +
+            "1 seagrass, 1 sweet red pepper",
+            position=2,
+            menu=menu1)
         MenuItem.objects.create(
-            name="9 pcs", price=100, description="3 rolls, 2 vegan sashimi, 1 avocado, 1 tofu, 1 seagrass, 1 sweet red pepper", position=1, menu=menu1)
+            name="9 pcs",
+            price=100,
+            description="3 rolls, 2 vegan sashimi, 1 avocado, " +
+            "1 tofu, 1 seagrass, 1 sweet red pepper",
+            position=1,
+            menu=menu1)
 
         # Act
         menus = get_menus(0)

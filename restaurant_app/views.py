@@ -5,9 +5,11 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
-from restaurant_app.forms import BookingForm, MyReservationForm, ReservationForm
+from restaurant_app.forms import (
+    BookingForm, MyReservationForm, ReservationForm)
 from restaurant_app.models import Reservation
-from restaurant_app.services import TimeSlot, get_menus, get_timeslots, make_reservation
+from restaurant_app.services import (
+    TimeSlot, get_menus, get_timeslots, make_reservation)
 
 
 class HomeView(TemplateView):
@@ -20,7 +22,7 @@ class AboutView(TemplateView):
 
 class FoodMenuView(View):
     def get(self, request, *args, **kwargs):
-        menus = get_menus(0) # 0 stands for Menu.TYPE = Dishes
+        menus = get_menus(0)  # 0 stands for Menu.TYPE = Dishes
 
         return render(
             request,
@@ -151,9 +153,12 @@ class MyReservationView(View):
         reservation_date = {}
         message = request.GET.get('message')
 
-        if any(Reservation.objects.filter(guest=request.user, reserved_start_date__gte=datetime.now(tz=pytz.UTC))):
+        if any(Reservation.objects.filter(
+                guest=request.user,
+                reserved_start_date__gte=datetime.now(tz=pytz.UTC))):
             reservation = Reservation.objects.get(
-                guest=request.user, reserved_start_date__gte=datetime.now(tz=pytz.UTC))
+                guest=request.user,
+                reserved_start_date__gte=datetime.now(tz=pytz.UTC))
             form['reservation_id'].initial = reservation.id
             reservation_date = reservation.reserved_start_date
 
